@@ -31,7 +31,7 @@ build :: [LogMessage] -> MessageTree
 build x = do_build x Leaf
     where
         do_build [] tree = tree
-        do_build (x:xs) tree = do_build xs (insert x tree)
+        do_build (x : xs) tree = do_build xs (insert x tree)
 
 inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf = []
