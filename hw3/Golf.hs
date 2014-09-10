@@ -23,7 +23,7 @@ localMaxima (x1:x2:x3:xs)
         d2 = x2 - x3
 localMaxima _             = []
 
-count9 x = [(count i) | i <- [0..9]]
+count9 x = [count i | i <- [0..9]]
     where
         count n = length (filter (== n) x)
 
