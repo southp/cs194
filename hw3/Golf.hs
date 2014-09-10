@@ -15,15 +15,13 @@ skips x = do_skips 1
             | otherwise    = pick_n x n : do_skips (n+1)
 
 localMaxima :: [Integer] -> [Integer]
-localMaxima []            = []
-localMaxima [x]           = []
-localMaxima [x1,x2]       = []
 localMaxima (x1:x2:x3:xs)
     | d1 > 0 && d2 > 0    = x2 : localMaxima (x2:x3:xs)
     | otherwise           = localMaxima (x2:x3:xs)
     where
         d1 = x2 - x1
         d2 = x2 - x3
+localMaxima _             = []
 
 count_9 x = [(count 0), (count 1), (count 2), (count 3), (count 4), (count 5), (count 6), (count 7), (count 8), (count 9)]
     where
