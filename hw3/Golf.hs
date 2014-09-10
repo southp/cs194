@@ -1,11 +1,9 @@
 module Golf where
 
-pickN x n = do_pick x n
+pickN x n = do_pick (drop (n-1) x)
     where
-        do_pick [] _      = []
-        do_pick (x:xs) i
-            | i == 1        = x : do_pick xs n
-            | otherwise     = do_pick xs (i-1)
+        do_pick []     = []
+        do_pick (d:ds) = d : do_pick (drop (n-1) ds)
 
 skips :: [a] -> [[a]]
 skips x = do_skips 1
