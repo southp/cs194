@@ -25,4 +25,21 @@ localMaxima (x1:x2:x3:xs)
         d1 = x2 - x1
         d2 = x2 - x3
 
--- histogram :: [Integer] -> String
+count_9 x = [(count 0), (count 1), (count 2), (count 3), (count 4), (count 5), (count 6), (count 7), (count 8), (count 9)]
+    where
+        count n = length (filter (\x' -> x' == n) x)
+
+histo_n x n = do_histo_n (count_9 x)
+    where
+        do_histo_n []     = "\n"
+        do_histo_n (c:cs)
+            | c >= n      = '*' : do_histo_n cs
+            | otherwise   = ' ' : do_histo_n cs
+
+histogram :: [Integer] -> String
+histogram x = histo_all (maximum counts) ++ "==========\n0123456789\n"
+    where
+        counts     = count_9 x
+        histo_all n
+            | n == 0    = ""
+            | otherwise = histo_n x n ++ histo_all (n-1)
