@@ -14,6 +14,15 @@ skips x = reverse $ do_skips (length x) []
             | n == 0    = r
             | otherwise = pick_n x n : do_skips (n-1) r
 
--- localMaxima :: [Integer] -> [Integer]
---
+localMaxima :: [Integer] -> [Integer]
+localMaxima []            = []
+localMaxima [x]           = []
+localMaxima [x1,x2]       = []
+localMaxima (x1:x2:x3:xs)
+    | d1 > 0 && d2 > 0    = x2 : localMaxima (x2:x3:xs)
+    | otherwise           = localMaxima (x2:x3:xs)
+    where
+        d1 = x2 - x1
+        d2 = x2 - x3
+
 -- histogram :: [Integer] -> String
