@@ -1,18 +1,18 @@
 module Golf where
 
-pick_n x n = reverse $ do_pick x n []
+pick_n x n = do_pick x n
     where
-        do_pick [] _ r      = r
-        do_pick (x:xs) i r
-            | i == 1        = do_pick xs n (x:r)
-            | otherwise     = do_pick xs (i-1) r
+        do_pick [] _      = []
+        do_pick (x:xs) i
+            | i == 1        = x : do_pick xs n
+            | otherwise     = do_pick xs (i-1)
 
 skips :: [a] -> [[a]]
-skips x = reverse $ do_skips (length x) []
+skips x = do_skips 1
     where
-        do_skips n r
-            | n == 0    = r
-            | otherwise = pick_n x n : do_skips (n-1) r
+        do_skips n
+            | n > length x = []
+            | otherwise    = pick_n x n : do_skips (n+1)
 
 localMaxima :: [Integer] -> [Integer]
 localMaxima []            = []
