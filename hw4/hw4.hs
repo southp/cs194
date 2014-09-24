@@ -15,20 +15,33 @@ fun2 n
 fun1' :: [Integer] -> Integer
 fun1' x = foldr (*) 1 (map (subtract 2) (filter even x))
 
--- fun2' :: Integer -> Integer
+fun2' :: Integer -> Integer
+fun2' 1 = 0
+fun2' n = sum (takeWhile even xs) + fun2' (sum (dropWhile even xs))
+    where xs = iterate (`div` 2) n
 
 -- Exercise 2.
 data Tree a = Leaf
             | Node Integer (Tree a) a (Tree a)
             deriving (Show, Eq)
 
-balanceInsert :: a -> Tree a -> Tree a
-balanceInsert x Leaf = Node 0 Leaf x Leaf
-balanceInsert x (Node h tl   t Leaf) = Node h tl                     t (balanceInsert x Leaf)
-balanceInsert x (Node h Leaf t tr  ) = Node h (balanceInsert x Leaf) t tr
-balanceInsert x (Node h tl@(Node hl _ _ _) t tr@(Node hr _ _ _))
-                     | hl >= hr  = Node (h + 1) tl                   t (balanceInsert x tr)
-                     | otherwise = Node (h + 1) (balanceInsert x tl) t tr
 
-foldTree :: [a] -> Tree a
-foldTree xs = foldr balanceInsert Leaf xs
+-- Exercise 3
+xor :: [Bool] -> Bool
+xor xs = foldr (xor') False xs
+    where
+        xor' a b | a == b    = False
+                 | otherwise = True
+
+map' :: (a -> b) -> [a] -> [b]
+map' f = foldr (\x y -> f x : y) []
+
+-- Exercise 4
+cartProd :: [a] -> [b] -> [(a, b)]
+cartProd xs ys = [(x, y) | x <- xs, y <- ys]
+
+sieveSundaram :: Integer -> [Integer]
+sieveSundaram n = map (\(i, j) -> i + j + 2*i*j) ij_pairs
+    where
+        ij_pairs = filter (\(i, j) -> i + j + 2*i*j <= n) (filter (uncurry (<)) (cartProd [1..n] [1..n]))
+
