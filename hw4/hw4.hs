@@ -38,8 +38,12 @@ map' f = foldr (\x y -> f x : y) []
 cartProd :: [a] -> [b] -> [(a, b)]
 cartProd xs ys = [(x, y) | x <- xs, y <- ys]
 
+sievePairs :: Integer -> [(Integer, Integer)]
+sievePairs n = filter (\(i, j) -> i + j + 2*i*j <= n) (filter (uncurry (<=)) (cartProd [1..n] [1..n]))
+
+sieveNum :: Integer -> [Integer]
+sieveNum n = map (\(i, j) -> i + j + 2*i*j) (sievePairs n)
+
 sieveSundaram :: Integer -> [Integer]
-sieveSundaram n = map (\(i, j) -> i + j + 2*i*j) ij_pairs
-    where
-        ij_pairs = filter (\(i, j) -> i + j + 2*i*j <= n) (filter (uncurry (<)) (cartProd [1..n] [1..n]))
+sieveSundaram n = map (+1) . map (*2) $ foldr (\x y -> filter (/= x) y) [1..n] (sieveNum n)
 
