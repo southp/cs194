@@ -13,7 +13,7 @@ fun2 n
     | otherwise = fun2 (3 * n + 1)
 
 fun1' :: [Integer] -> Integer
-fun1' x = foldr (*) 1 (map (subtract 2) (filter even x))
+fun1' x = product (map (subtract 2) (filter even x))
 
 fun2' :: Integer -> Integer
 fun2' n = sum $ filter even (takeWhile (/= 1) (iterate (\x -> if even x then x `div` 2 else 3*x + 1) n))
@@ -26,7 +26,7 @@ data Tree a = Leaf
 
 -- Exercise 3
 xor :: [Bool] -> Bool
-xor xs = foldr (xor') False xs
+xor = foldr xor' False
     where
         xor' a b | a == b    = False
                  | otherwise = True
@@ -45,5 +45,5 @@ sieveNum :: Integer -> [Integer]
 sieveNum n = map (\(i, j) -> i + j + 2*i*j) (sievePairs n)
 
 sieveSundaram :: Integer -> [Integer]
-sieveSundaram n = map (+1) . map (*2) $ foldr (\x y -> filter (/= x) y) [1..n] (sieveNum n)
+sieveSundaram n = map (\x -> 2*x + 1) $ foldr (\x y -> filter (/= x) y) [1..n] (sieveNum n)
 
