@@ -16,9 +16,7 @@ fun1' :: [Integer] -> Integer
 fun1' x = foldr (*) 1 (map (subtract 2) (filter even x))
 
 fun2' :: Integer -> Integer
-fun2' 1 = 0
-fun2' n = sum (takeWhile even xs) + fun2' (sum (dropWhile even xs))
-    where xs = iterate (`div` 2) n
+fun2' n = sum $ filter even (takeWhile (/= 1) (iterate (\x -> if even x then x `div` 2 else 3*x + 1) n))
 
 -- Exercise 2.
 data Tree a = Leaf
