@@ -24,6 +24,19 @@ data Tree a = Leaf
             deriving (Show, Eq)
 
 
+-- toNode :: a -> Tree a
+-- toNode x = Node 0 Leaf x Leaf
+--
+-- merge :: Tree a -> Tree a -> Tree a
+-- merge t Leaf = t
+-- merge Leaf t = t
+-- merge tl@(Node hl tll al tlr) tr@(Node hr trl ar trr)
+--     | hl == hr = Node (hl + 1) (merge tll tr) al tlr
+--     | hl <  hr = Node hr (merge tl trl) ar trr
+--
+-- foldTree :: [a] -> Tree a
+-- foldTree x = foldr merge Leaf (map toNode x)
+
 -- Exercise 3
 xor :: [Bool] -> Bool
 xor = foldr xor' False
@@ -33,6 +46,16 @@ xor = foldr xor' False
 
 map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\x y -> f x : y) []
+
+myFoldl :: (a -> b -> a) -> a -> [b] -> a
+myFoldl f z xs = foldr (\x y -> f y x) z (reverse xs)
+
+
+-- from Haskell wiki
+foldl2 :: (a -> b -> a) -> a -> [b] -> a
+foldl2 f a bs =
+   foldr (\b g x -> g (f x b)) id bs a
+
 
 -- Exercise 4
 cartProd :: [a] -> [b] -> [(a, b)]
