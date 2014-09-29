@@ -50,12 +50,10 @@ map' f = foldr (\x y -> f x : y) []
 myFoldl :: (a -> b -> a) -> a -> [b] -> a
 myFoldl f z xs = foldr (\x y -> f y x) z (reverse xs)
 
-
--- from Haskell wiki
+-- from Haskell wiki. Much more cleaner
 foldl2 :: (a -> b -> a) -> a -> [b] -> a
 foldl2 f a bs =
    foldr (\b g x -> g (f x b)) id bs a
-
 
 -- Exercise 4
 cartProd :: [a] -> [b] -> [(a, b)]
