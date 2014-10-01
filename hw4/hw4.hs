@@ -23,19 +23,24 @@ data Tree a = Leaf
             | Node Integer (Tree a) a (Tree a)
             deriving (Show, Eq)
 
+getHeight :: Tree a -> Integer
+getHeight Leaf           = -1
+getHeight (Node h _ _ _) = h
 
--- toNode :: a -> Tree a
--- toNode x = Node 0 Leaf x Leaf
---
--- merge :: Tree a -> Tree a -> Tree a
--- merge t Leaf = t
--- merge Leaf t = t
--- merge tl@(Node hl tll al tlr) tr@(Node hr trl ar trr)
---     | hl == hr = Node (hl + 1) (merge tll tr) al tlr
---     | hl <  hr = Node hr (merge tl trl) ar trr
---
--- foldTree :: [a] -> Tree a
--- foldTree x = foldr merge Leaf (map toNode x)
+baInsert :: a -> Tree a -> Tree a
+baInsert x Leaf = Node 0 Leaf x Leaf
+baInsert x (Node h tl a tr)
+    | hl <  hr = Node h        tn a tr
+    | hl >  hr = Node h        tl a (baInsert x tr)
+    | hr == hl = Node (hn + 1) tn a tr
+    where hl = getHeight tl
+          hr = getHeight tr
+          tn = baInsert x tl
+          hn = getHeight tn    -- thanks for stackoverflow.
+                               -- I didn't come up this hn when I wrote this and struggled
+
+foldTree :: [a] -> Tree a
+foldTree = foldr baInsert Leaf
 
 -- Exercise 3
 xor :: [Bool] -> Bool
@@ -48,7 +53,7 @@ map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\x y -> f x : y) []
 
 myFoldl :: (a -> b -> a) -> a -> [b] -> a
-myFoldl f z xs = foldr (\x y -> f y x) z (reverse xs)
+myFoldl f z xs = foldr (flip f) z (reverse xs)
 
 -- from Haskell wiki. Much more cleaner
 foldl2 :: (a -> b -> a) -> a -> [b] -> a
