@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 import ExprT
 import Parser
 
@@ -56,3 +58,4 @@ testBool = testExp :: Maybe Bool
 testMM = testExp :: Maybe MinMax
 testSat = testExp :: Maybe Mod7
 
+-- exercise 6
