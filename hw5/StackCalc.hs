@@ -15,4 +15,4 @@ instance Expr Program where
     add x y  = x ++ y ++ [Add]
 
 compile :: String -> Maybe Program
-compile xs = parseExp lit add mul xs :: Maybe Program
+compile = parseExp lit add mul
