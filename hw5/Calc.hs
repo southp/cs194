@@ -2,6 +2,7 @@
 
 import ExprT
 import Parser
+import qualified Data.Map as M
 
 class Expr a where
     lit :: Integer -> a
@@ -57,5 +58,3 @@ testInteger = testExp :: Maybe Integer
 testBool = testExp :: Maybe Bool
 testMM = testExp :: Maybe MinMax
 testSat = testExp :: Maybe Mod7
-
--- exercise 6
