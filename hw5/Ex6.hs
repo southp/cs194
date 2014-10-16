@@ -20,23 +20,23 @@ data VarExprT
     deriving (Show, Eq)
 
 instance HasVars VarExprT where
-    var x = Var x
+    var = Var
 
 instance Expr VarExprT where
-    lit x = Lit x
-    mul x y = Mul x y
-    add x y = Add x y
+    lit = Lit
+    mul = Mul
+    add = Add
 
 instance HasVars (M.Map String Integer -> Maybe Integer) where
-    var x = M.lookup x
+    var = M.lookup
 
 instance Expr (M.Map String Integer -> Maybe Integer) where
     lit x _ = Just x
-    mul x y = \z -> case (x z, y z) of
+    mul x y z = case (x z, y z) of
                     (Nothing, _) -> Nothing
                     (_, Nothing) -> Nothing
                     (Just a, Just b) ->  Just (a * b)
-    add x y = \z -> case (x z, y z) of
+    add x y z = case (x z, y z) of
                     (Nothing, _) -> Nothing
                     (_, Nothing) -> Nothing
                     (Just a, Just b) ->  Just (a + b)
