@@ -29,3 +29,17 @@ streamMap f (Cons s ss) = Cons (f s) (streamMap f ss)
 
 streamFromSeed :: (a -> a) -> a -> Stream a
 streamFromSeed f x = Cons x (streamFromSeed f (f x))
+
+nats :: Stream Integer
+nats = streamFromSeed (+1) 0
+
+maxPowerOf2 :: Integer -> Integer
+maxPowerOf2 0 = 0
+maxPowerOf2 x = toInteger (length $ takeWhile (== 0) (mod2List x))
+
+mod2List :: Integer -> [Integer]
+mod2List x = map (x `mod`) (iterate (*2) 2)
+
+ruler :: Stream Integer
+ruler = streamMap maxPowerOf2 (streamFromSeed (+1) 1)
+
