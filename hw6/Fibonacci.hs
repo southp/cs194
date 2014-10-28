@@ -73,3 +73,15 @@ instance Fractional (Stream Integer) where
 
 fibs3 :: Stream Integer
 fibs3 = x / (1 - x - x^2)
+
+data Mat2D = Mat2D Integer Integer Integer Integer
+            deriving Show
+
+instance Num Mat2D where
+    (Mat2D a11 a12 a21 a22) * (Mat2D b11 b12 b21 b22) = Mat2D (a11*b11 + a12*b21) (a11*b12 + a12*b22)
+                                                              (a21*b11 + a22*b21) (a21*b12 + a22*b22)
+
+fibs4 :: Integer -> Integer
+fibs4 0 = 0
+fibs4 n = fn
+    where (Mat2D fn _ _ _) = (Mat2D 1 1 1 0)^n
