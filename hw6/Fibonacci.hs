@@ -66,5 +66,10 @@ instance Num (Stream Integer) where
 
     (Cons a as) + (Cons b bs) = Cons (a + b) (as + bs)
 
-    (Cons a as) * (Cons b bs) = Cons (a*b) (a `intMul` bs + as*(Cons b bs))
+    (Cons a as) * bf@(Cons b bs) = Cons (a*b) (a `intMul` bs + as*bf)
 
+instance Fractional (Stream Integer) where
+    af@(Cons a as) / bf@(Cons b bs) = Cons(a `div` b) ((1 `div` b) `intMul` (as - (af/bf)*bs))
+
+fibs3 :: Stream Integer
+fibs3 = x / (1 - x - x^2)
