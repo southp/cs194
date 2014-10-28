@@ -62,7 +62,9 @@ a `intMul` (Cons b bs) = Cons (a*b) (a `intMul` bs)
 instance Num (Stream Integer) where
     fromInteger n = Cons n (streamRepeat 0)
 
+    negate (Cons a as) = Cons (-a) (negate as)
+
     (Cons a as) + (Cons b bs) = Cons (a + b) (as + bs)
 
-    (Cons a as) * (Cons b bs) = (fromInteger (a*b)) + (b `intMul` as*x) + (a `intMul` bs*x) + (as*bs*x*x)
+    (Cons a as) * (Cons b bs) = Cons (a*b) (a `intMul` bs + as*(Cons b bs))
 
