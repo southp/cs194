@@ -1,3 +1,7 @@
+{-# LANGUAGE FlexibleInstances #-}
+
+module JoinList where
+
 import Data.Monoid
 import Sized
 
@@ -79,5 +83,3 @@ x4 = Single (Size 1) "d"
 x5 = Single (Size 1) "e"
 
 x = (x1 +++ x2) +++ (x3 +++ x4 +++ x5)
-
-
