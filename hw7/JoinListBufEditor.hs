@@ -1,5 +1,6 @@
 module Main where
 
+import JoinList
 import JoinListBuffer
 import Editor
 
@@ -8,6 +9,6 @@ initialContent = map fromString
          , "evaluation of steam valve coefficients."
          , "To load a different file, type the character L followed"
          , "by the name of the file."
-         ] :: [JoinList (Score, Size) String]
+         ] :: [JoinListBuf]
 
 main = runEditor editor $ foldr (+++) Empty initialContent

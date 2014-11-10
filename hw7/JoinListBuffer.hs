@@ -1,6 +1,10 @@
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 
-module JoinListBuffer where
+module JoinListBuffer
+    (
+        module JoinListBuffer,
+        module Buffer
+    )where
 
 import JoinList
 import Buffer
@@ -10,6 +14,8 @@ import Scrabble
 -- exercise 3
 scoreLine :: String -> JoinList Score String
 scoreLine x = Single (scoreString x) x
+
+type JoinListBuf = JoinList (Score, Size) String
 
 -- exercise 4
 instance Buffer (JoinList (Score, Size) String) where
