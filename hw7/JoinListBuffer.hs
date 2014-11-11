@@ -21,12 +21,11 @@ type JoinListBuf = JoinList (Score, Size) String
 instance Buffer (JoinList (Score, Size) String) where
     toString Empty = ""
     toString (Single _ s) = s
-    toString (Append _ j1 j2) = toString j1 ++ toString j2
+    toString (Append _ j1 j2) = toString j1 ++ "\n" ++ toString j2
     replaceLine n l b = takeJ (n-1) b +++ fromString l +++ dropJ n b
-    fromString str = Single (m, 1) str
-        where (Single m _) = scoreLine str
+    fromString = foldr ((+++) . (\s -> Single (scoreString s, Size 1) s)) Empty . lines
 
-    line n = indexJ n
+    line = indexJ
     numLines = getSize . size . tag
     value b = getScore s
         where (s, _) = tag b
