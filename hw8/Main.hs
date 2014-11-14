@@ -1,4 +1,3 @@
-import Data.Tree
 import Data.List
 
 import System.Environment
