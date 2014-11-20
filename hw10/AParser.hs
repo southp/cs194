@@ -57,3 +57,12 @@ posInt = Parser f
 ------------------------------------------------------------
 -- Your code goes below here
 ------------------------------------------------------------
+first :: (a -> b) -> (a, c) -> (b, c)
+first f (a, c) = (f a, c)
+
+maybeFirst :: (a -> b) -> Maybe (a, c) -> Maybe (b, c)
+maybeFirst _ Nothing = Nothing
+maybeFirst f (Just (a, c)) = Just (f a, c)
+
+instance Functor Parser where
+    fmap f pa = Parser (maybeFirst f . runParser pa)
