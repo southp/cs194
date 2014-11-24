@@ -64,5 +64,43 @@ maybeFirst :: (a -> b) -> Maybe (a, c) -> Maybe (b, c)
 maybeFirst _ Nothing = Nothing
 maybeFirst f (Just (a, c)) = Just (f a, c)
 
+maybeSecond :: (b -> c) -> Maybe (a, b) -> Maybe (a, c)
+maybeSecond _ Nothing = Nothing
+maybeSecond f (Just (a, b)) = Just (a, f b)
+
 instance Functor Parser where
     fmap f pa = Parser (maybeFirst f . runParser pa)
+
+instance Applicative Parser where
+    pure a = Parser f
+        where f x = Just (a, x)
+    pf <*> pa = Parser f
+        where
+            f x = case runParser pf x of
+                    Nothing -> Nothing
+                    Just(f, s) -> case runParser pa s of
+                                    Nothing -> Nothing
+                                    Just(a, ss) -> Just(f a, ss)
+
+
+----------------------------
+-- Something for test
+----------------------------
+type Name = String
+data Employee = Emp {
+                    name :: Name,
+                    phone :: String
+                }
+                deriving Show
+
+parseName :: Parser Name
+parseName = Parser f
+  where
+    f xs
+      | null ns   = Nothing
+      | otherwise = Just (ns, rest)
+      where (ns, rest) = span isLetter xs
+
+parsePhone :: Parser String
+parsePhone = show `fmap` posInt
+
