@@ -57,8 +57,62 @@ posInt = Parser f
 ------------------------------------------------------------
 -- Your code goes below here
 ------------------------------------------------------------
+
+-- exercise 1
 first :: (a -> b) -> (a, c) -> (b, c)
 first f (a, c) = (f a, c)
 
--- instance Functor Parser where
+maybeFirst :: (a -> b) -> Maybe (a, c) -> Maybe (b, c)
+maybeFirst _ Nothing = Nothing
+maybeFirst f (Just (a, c)) = Just (f a, c)
+
+maybeSecond :: (b -> c) -> Maybe (a, b) -> Maybe (a, c)
+maybeSecond _ Nothing = Nothing
+maybeSecond f (Just (a, b)) = Just (a, f b)
+
+instance Functor Parser where
+    fmap f pa = Parser (maybeFirst f . runParser pa)
+
+-- exercise 2
+instance Applicative Parser where
+    pure a = Parser f
+        where f x = Just (a, x)
+    pf <*> pa = Parser f
+        where
+            f x = case runParser pf x of
+                    Nothing -> Nothing
+                    Just(f, s) -> case runParser pa s of
+                                    Nothing -> Nothing
+                                    Just(a, ss) -> Just(f a, ss)
+-- exercise 3
+abParser :: Parser (Char, Char)
+abParser = (,) <$> (char 'a') <*> (char 'b')
+
+abParser_ :: Parser ()
+abParser_ = (\_ _ -> ()) <$> (char 'a') <*> (char 'b')
+
+intPair :: Parser [Integer]
+intPair = (\i _ j -> [i, j]) <$> posInt <*> char ' ' <*> posInt
+
+
+----------------------------
+-- Something for test
+----------------------------
+type Name = String
+data Employee = Emp {
+                    name :: Name,
+                    phone :: String
+                }
+                deriving Show
+
+parseName :: Parser Name
+parseName = Parser f
+  where
+    f xs
+      | null ns   = Nothing
+      | otherwise = Just (ns, rest)
+      where (ns, rest) = span isLetter xs
+
+parsePhone :: Parser String
+parsePhone = show `fmap` posInt
 
