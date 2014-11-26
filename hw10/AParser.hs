@@ -86,24 +86,24 @@ instance Applicative Parser where
                                     Just(a, ss) -> Just(f a, ss)
 -- exercise 3
 abParser :: Parser (Char, Char)
-abParser = (,) <$> (char 'a') <*> (char 'b')
+abParser = (,) <$> char 'a' <*> char 'b'
 
 abParser_ :: Parser ()
-abParser_ = (\_ _ -> ()) <$> (char 'a') <*> (char 'b')
+abParser_ = (\_ _ -> ()) <$> char 'a' <*> char 'b'
 
 intPair :: Parser [Integer]
 intPair = (\i _ j -> [i, j]) <$> posInt <*> char ' ' <*> posInt
 
 -- exercise 4
 instance Alternative Parser where
-    empty = Parser (\_ -> Nothing)
+    empty = Parser (const Nothing)
     p1 <|> p2 = Parser f
         where
             f x = runParser p1 x <|> runParser p2 x
 
 intOrUppercase :: Parser ()
-intOrUppercase = (nil `fmap` posInt) <|> (nil `fmap` satisfy (isUpper))
-    where nil _ = ()
+intOrUppercase = (nil `fmap` posInt) <|> (nil `fmap` satisfy isUpper)
+    where nil = const ()
 
 
 ----------------------------
