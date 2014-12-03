@@ -66,10 +66,6 @@ maybeFirst :: (a -> b) -> Maybe (a, c) -> Maybe (b, c)
 maybeFirst _ Nothing = Nothing
 maybeFirst f (Just (a, c)) = Just (f a, c)
 
-maybeSecond :: (b -> c) -> Maybe (a, b) -> Maybe (a, c)
-maybeSecond _ Nothing = Nothing
-maybeSecond f (Just (a, b)) = Just (a, f b)
-
 instance Functor Parser where
     fmap f pa = Parser (maybeFirst f . runParser pa)
 
