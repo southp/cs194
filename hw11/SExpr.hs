@@ -52,8 +52,6 @@ trim p = spaces *> p <* spaces
 parseAtom :: Parser Atom
 parseAtom = N <$> trim posInt <|> I <$> trim ident
 
--- parseSExpr :: Parser SExpr
--- parseSExprA = A <$> parseAtom <|> Comb <$> char '(' *> oneOrMore
-
-
+parseSExpr :: Parser SExpr
+parseSExpr = A <$> parseAtom <|> Comb <$> trim (char '(' *> oneOrMore parseSExpr <* char ')')
 
